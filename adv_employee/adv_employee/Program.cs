@@ -19,35 +19,107 @@ namespace adv_employee
 
             if (File.Exists(fileName))
             {
-                Console.WriteLine("Found it");
+                ReadInFile(fileName);
             }
             else
             {
-                Console.WriteLine("File not found");
-                Console.WriteLine("Let me create the employee file for you");
-                using (XmlWriter writer = XmlWriter.Create(fileName))
+                FileNotFound(fileName);
+            }
+
+            ShowMenu();
+
+
+            Console.ReadLine();
+
+        }
+
+        static void ReadInFile(string file)
+        {
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("C:\\Users\\Ting\\Source\\Repos\\Week3_Day4_TIY\\employees.xml");
+            XmlNode empCat = doc.DocumentElement.SelectSingleNode("/Profiles");
+
+            foreach (XmlNode child in empCat.ChildNodes)
+            {
+                EmployInfo emplyDetail = new EmployInfo();
+                foreach (XmlNode grandChild in child.ChildNodes)
                 {
-                    writer.WriteStartDocument();
-                    writer.WriteStartElement("Profiles");
-
-                    foreach (EmployInfo b in employlist)
+                    switch (grandChild.Name)
                     {
-                        writer.WriteStartElement("Employee");
+                        case "name":
+                            {
+                                string emplyName = emplyDetail.name;
+                                emplyName = grandChild.InnerText;
+                                Console.WriteLine("/***********************/");
+                                Console.WriteLine("");
+                                Console.WriteLine("Employee Name " + emplyName );
+                                break;
+                            }
 
-                        writer.WriteElementString("Id", b.id);
-                        writer.WriteElementString("Name", b.name);
-                        writer.WriteElementString("Payrate", Convert.ToString(b.payrate));
+                        default:
+                            {
+                                break;
+                            }
 
 
-                        writer.WriteEndElement();
                     }
-                    writer.WriteEndElement();
 
                 }
 
             }
-            Console.ReadLine();
-
         }
+
+
+        static void FileNotFound(string file)
+        {
+            Console.WriteLine("The file you requested does not exist, a new file has been created for you");
+            Console.WriteLine("");
+
+            using (XmlWriter writer = XmlWriter.Create(file))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Profiles");
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
+        static void ShowMenu()
+        {
+
+            Console.WriteLine("[1] Create Employee ");
+            Console.WriteLine("[2] Terminate an Employee ");
+            Console.WriteLine("[3] Give a Raise ");
+            Console.WriteLine("[4] Pay Employee ");
+            Console.WriteLine("[5] Display All Employees ");
+            Console.WriteLine("[6] Exit Program ");
+            Console.WriteLine("");
+
+            Console.WriteLine("Please select an option 1-6");
+
+            //string userInput = Console.ReadLine();
+
+            //switch (userInput)
+            //{
+            //    case '1';
+            //}
+            //Console.WriteLine
+            //{
+            //    case '2';
+            //}
+            //{
+            //    case '3';
+            //}
+            //{
+            //    case '4';
+            //}
+            //{
+            //    case '5';
+            //}
+            //default{
+            //    break;
+            //}
+        }
+
     }
 }
