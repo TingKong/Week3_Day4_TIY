@@ -26,11 +26,92 @@ namespace adv_employee
                 FileNotFound(fileName);
             }
 
-            ShowMenu();
+         
+            bool useprogram = true;
+            while (useprogram)
+            {
+                ShowMenu();
+
+                char userInput = Convert.ToChar(Console.ReadLine());
+
+                switch (userInput)
+                {
+
+                    case '1':
+                        {
+                            NewEmploy(employlist);
+                            break;
+                        }
+                    case '2':
+                        {
+                            Console.WriteLine("selected 2");
+
+                            break;
+                        }
+                    case '3':
+                        {
+                            Console.WriteLine("selected 3");
+
+                            break;
+                        }
+                    case '4':
+                        {
+                            Console.WriteLine("selected 4");
+
+                            break;
+                        }
+                    case '5':
+                        {
+                            Console.WriteLine("selected 5");
+                            DisplayAll(employlist);
+
+                            break;
+                        }
+                    case '6':
+                        {
+                            Console.WriteLine("selected 6");
+                            break;
+                        }
+
+                    default:
+                        {
+                            Console.WriteLine("Need a number 1-6");
+
+                            break;
+                        }
 
 
+                }
+
+            }
             Console.ReadLine();
 
+        }
+
+        static void NewEmploy(List<EmployInfo> newlist)
+        {
+           
+            Console.WriteLine("Please enter an employee name ");
+            string employName = Console.ReadLine();
+            Console.WriteLine("Please enter employee id ");
+            string id = Console.ReadLine();
+            Console.WriteLine("Please give the emmployee a salary");
+            double salary = Convert.ToDouble(Console.ReadLine());
+            EmployInfo employN = new EmployInfo( id, employName, salary);
+            newlist.Add(employN);
+            Console.WriteLine(employN.Name + ", " + employN.Id + ", " + employN.Payrate.ToString());
+            
+
+        }
+
+        static void DisplayAll(List<EmployInfo> cycle)
+        {
+
+            foreach (EmployInfo a in cycle)
+            {
+                Console.WriteLine(string.Format("{0}, {1}, {2}", a.Name, a.Id, a.Payrate));
+         
+            }
         }
 
         static void ReadInFile(string file)
@@ -42,18 +123,16 @@ namespace adv_employee
 
             foreach (XmlNode child in empCat.ChildNodes)
             {
-                EmployInfo emplyDetail = new EmployInfo();
                 foreach (XmlNode grandChild in child.ChildNodes)
                 {
                     switch (grandChild.Name)
                     {
                         case "name":
                             {
-                                string emplyName = emplyDetail.name;
-                                emplyName = grandChild.InnerText;
+                                string emplyName = grandChild.InnerText;
                                 Console.WriteLine("/***********************/");
                                 Console.WriteLine("");
-                                Console.WriteLine("Employee Name " + emplyName );
+                                //Console.WriteLine("Employee Name: " + emplyName );
                                 break;
                             }
 
@@ -64,6 +143,7 @@ namespace adv_employee
 
 
                     }
+
 
                 }
 
@@ -86,7 +166,7 @@ namespace adv_employee
         }
         static void ShowMenu()
         {
-
+            Console.WriteLine();
             Console.WriteLine("[1] Create Employee ");
             Console.WriteLine("[2] Terminate an Employee ");
             Console.WriteLine("[3] Give a Raise ");
@@ -95,31 +175,17 @@ namespace adv_employee
             Console.WriteLine("[6] Exit Program ");
             Console.WriteLine("");
 
-            Console.WriteLine("Please select an option 1-6");
+            Console.WriteLine("Please select an option with the number 1-6");
 
-            //string userInput = Console.ReadLine();
 
-            //switch (userInput)
-            //{
-            //    case '1';
-            //}
-            //Console.WriteLine
-            //{
-            //    case '2';
-            //}
-            //{
-            //    case '3';
-            //}
-            //{
-            //    case '4';
-            //}
-            //{
-            //    case '5';
-            //}
-            //default{
-            //    break;
-            //}
+
         }
+
+        static void ExitProgram(string file)
+        {
+
+        }
+
 
     }
 }
