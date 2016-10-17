@@ -44,13 +44,11 @@ namespace adv_employee
                         }
                     case '2':
                         {
-                            Console.WriteLine("selected 2");
-
                             break;
                         }
                     case '3':
                         {
-                            Console.WriteLine("selected 3");
+                            GiveRaise();
 
                             break;
                         }
@@ -69,8 +67,9 @@ namespace adv_employee
                         }
                     case '6':
                         {
-                            Console.WriteLine("selected 6");
-                            break;
+                            Console.WriteLine("Your file has been saved, and will now exit");
+                            useprogram = false;
+                                break;
                         }
 
                     default:
@@ -88,6 +87,28 @@ namespace adv_employee
 
         }
 
+        static void GiveRaise(List<EmployInfo> cycle)
+        {
+            Console.WriteLine("Please enter employee id ");
+            string idRaise = Console.ReadLine();
+            EmployInfo employN = new EmployInfo(id, employName, salary);
+
+            foreach (EmployInfo a in cycle)
+            {   
+                if (idRaise == Convert.ToString(a))
+                {
+                    double newRaise = Convert.ToDouble(idRaise);
+                     newRaise = employN.Payrate * .20;
+                    double totalRaise = newRaise + employN.Payrate;
+                    Console.WriteLine(totalRaise);
+                    cycle.Add(employN);
+
+                }
+
+            }
+           
+
+        }
         static void NewEmploy(List<EmployInfo> newlist)
         {
            
@@ -109,7 +130,7 @@ namespace adv_employee
 
             foreach (EmployInfo a in cycle)
             {
-                Console.WriteLine(string.Format("{0}, {1}, {2}", a.Name, a.Id, a.Payrate));
+                Console.WriteLine(string.Format("Employee info: {0}, {1}, {2}", a.Name, a.Id, a.Payrate));
          
             }
         }
@@ -180,12 +201,6 @@ namespace adv_employee
 
 
         }
-
-        static void ExitProgram(string file)
-        {
-
-        }
-
 
     }
 }
