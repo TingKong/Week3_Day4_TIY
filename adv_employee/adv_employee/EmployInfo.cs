@@ -18,9 +18,9 @@ namespace adv_employee
             id = a;
             name = b;
             payrate = c;
-            
-          
+    
         }
+ 
 
         public string Id
         {
@@ -50,6 +50,24 @@ namespace adv_employee
             }
 
 
+        }
+
+        public void Raise(double amtRaise)
+        {
+
+            payrate = amtRaise;
+
+        }
+
+        public void Terminate(string fired)
+        {
+            id = fired;
+            Console.WriteLine(id);
+
+        }
+        public void PassFileIn(string x)
+        {
+            id = x;
         }
     }
 }

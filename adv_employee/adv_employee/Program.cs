@@ -44,17 +44,17 @@ namespace adv_employee
                         }
                     case '2':
                         {
+                            Terminate1(employlist);
                             break;
                         }
                     case '3':
                         {
                             GiveRaise(employlist);
-
                             break;
                         }
                     case '4':
-                        {
-                            Console.WriteLine("selected 4");
+                        { 
+                            Pay(employlist);
 
                             break;
                         }
@@ -67,6 +67,7 @@ namespace adv_employee
                         }
                     case '6':
                         {
+                            Exit(fileName, employlist);
                             Console.WriteLine("Your file has been saved, and will now exit");
                             useprogram = false;
                                 break;
@@ -87,6 +88,66 @@ namespace adv_employee
 
         }
 
+        static void Exit(string file, List<EmployInfo> cycle)
+        {
+
+            using (XmlWriter writer = XmlWriter.Create(file))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Profiles");
+                foreach (EmployInfo a in cycle)
+                {
+
+                    writer.WriteStartElement("Employee");
+                    writer.WriteElementString("ID", a.Id);
+                    writer.WriteElementString("Name", a.Name);
+                    writer.WriteElementString("Salary", a.Payrate.ToString());
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
+
+        static void Pay(List<EmployInfo> cycle)
+        {
+            
+            foreach (EmployInfo a in cycle)
+            {
+                if (a.Id == "terminated")
+                {
+                    Console.WriteLine(string.Format("ID: {0}. NAME: {1} : TERMINATED - NOT PAID", a.Name, a.Id));
+
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("ID: {0}. NAME: {1} : ACTIVE - PAID", a.Name, a.Id));
+                }
+
+            }
+
+
+        }
+
+        static void Terminate1(List<EmployInfo> cycle)
+        {
+            Console.WriteLine("Please enter employee id ");
+            string idEnd = Console.ReadLine();
+
+            foreach (EmployInfo a in cycle)
+            {
+                if (a.Id == idEnd)
+                {
+                    a.Terminate("terminated");
+                    
+
+                }
+
+            }
+        }
+
+
         static void GiveRaise(List<EmployInfo> cycle)
         {
             Console.WriteLine("Please enter employee id ");
@@ -99,10 +160,9 @@ namespace adv_employee
                 {
                     double newRaise = Convert.ToDouble(idRaise);
                      newRaise = a.Payrate + 1000;
-                    double totalRaise = newRaise + a.Payrate;
-                    Console.WriteLine(totalRaise);
-                    cycle.Add(a);
-
+                    Console.WriteLine(newRaise);
+                    a.Raise(newRaise);
+                    
                 }
 
             }
@@ -135,39 +195,53 @@ namespace adv_employee
             }
         }
 
-        static void ReadInFile(string file)
+        static void ReadInFile(string file, List<EmployInfo> cycle)
         {
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("C:\\Users\\Ting\\Source\\Repos\\Week3_Day4_TIY\\employees.xml");
+            doc.Load(file);
             XmlNode empCat = doc.DocumentElement.SelectSingleNode("/Profiles");
 
-            foreach (XmlNode child in empCat.ChildNodes)
-            {
-                foreach (XmlNode grandChild in child.ChildNodes)
+            foreach (EmployInfo a in cycle) {
+                foreach (XmlNode child in empCat.ChildNodes)
                 {
-                    switch (grandChild.Name)
+                    foreach (XmlNode grandChild in child.ChildNodes)
                     {
-                        case "name":
-                            {
-                                string emplyName = grandChild.InnerText;
-                                Console.WriteLine("/***********************/");
-                                Console.WriteLine("");
-                                //Console.WriteLine("Employee Name: " + emplyName );
-                                break;
-                            }
+                        switch (grandChild.Name)
+                        {
+                            case "Name":
+                                {
+                                    
+                                    a.Name = grandChild.InnerText;
+                                    Console.WriteLine("Employee Name: " + a.Name);
+                                    break;
+                                }
+                            case "ID":
+                                {
+                                    string emplyName = grandChild.InnerText;
+                                    Console.WriteLine(emplyName);
+                                    break;
 
-                        default:
-                            {
-                                break;
-                            }
+                                }
+
+                            case "Salary":
+                                {
+                                    string salary = grandChild.InnerText;
+                                    Console.WriteLine(salary);
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+
+
+                        }
 
 
                     }
 
-
                 }
-
             }
         }
 
@@ -181,10 +255,12 @@ namespace adv_employee
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Profiles");
+
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
         }
+
         static void ShowMenu()
         {
             Console.WriteLine();
