@@ -19,7 +19,7 @@ namespace adv_employee
 
             if (File.Exists(fileName))
             {
-                ReadInFile(fileName);
+                ReadInFile(fileName, employlist);
             }
             else
             {
@@ -202,32 +202,35 @@ namespace adv_employee
             doc.Load(file);
             XmlNode empCat = doc.DocumentElement.SelectSingleNode("/Profiles");
 
-            foreach (EmployInfo a in cycle) {
                 foreach (XmlNode child in empCat.ChildNodes)
                 {
-                    foreach (XmlNode grandChild in child.ChildNodes)
+                string empId = "";
+                string empName = "";
+                double empPay = 0;
+
+                foreach (XmlNode grandChild in child.ChildNodes)
                     {
                         switch (grandChild.Name)
                         {
                             case "Name":
                                 {
                                     
-                                    a.Name = grandChild.InnerText;
-                                    Console.WriteLine("Employee Name: " + a.Name);
+                                    empName = grandChild.InnerText;
+                                    Console.WriteLine("Employee Name: " + empName);
                                     break;
                                 }
                             case "ID":
                                 {
-                                    string emplyName = grandChild.InnerText;
-                                    Console.WriteLine(emplyName);
+                                    empId = grandChild.InnerText;
+                                    Console.WriteLine(empId);
                                     break;
 
                                 }
 
                             case "Salary":
                                 {
-                                    string salary = grandChild.InnerText;
-                                    Console.WriteLine(salary);
+                                    empPay = Convert.ToDouble(grandChild.InnerText);
+                                    Console.WriteLine(empPay);
                                     break;
                                 }
                             default:
@@ -235,15 +238,18 @@ namespace adv_employee
                                     break;
                                 }
 
-
                         }
 
-
-                    }
+                   
 
                 }
+
+                EmployInfo emp = new EmployInfo(empId, empName, empPay);
+                cycle.Add(emp);
             }
+          
         }
+        
 
 
         static void FileNotFound(string file)
