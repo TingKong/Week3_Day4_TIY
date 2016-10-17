@@ -48,7 +48,7 @@ namespace adv_employee
                         }
                     case '3':
                         {
-                            GiveRaise();
+                            GiveRaise(employlist);
 
                             break;
                         }
@@ -91,17 +91,17 @@ namespace adv_employee
         {
             Console.WriteLine("Please enter employee id ");
             string idRaise = Console.ReadLine();
-            EmployInfo employN = new EmployInfo(id, employName, salary);
 
             foreach (EmployInfo a in cycle)
-            {   
-                if (idRaise == Convert.ToString(a))
+            {
+
+                if ( a.Id == idRaise)
                 {
                     double newRaise = Convert.ToDouble(idRaise);
-                     newRaise = employN.Payrate * .20;
-                    double totalRaise = newRaise + employN.Payrate;
+                     newRaise = a.Payrate + 1000;
+                    double totalRaise = newRaise + a.Payrate;
                     Console.WriteLine(totalRaise);
-                    cycle.Add(employN);
+                    cycle.Add(a);
 
                 }
 

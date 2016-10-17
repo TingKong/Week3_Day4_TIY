@@ -12,7 +12,6 @@ namespace adv_employee
         private string name;
         private double payrate;
 
-        public 
 
         public EmployInfo(string a, string b, double c)
         {
