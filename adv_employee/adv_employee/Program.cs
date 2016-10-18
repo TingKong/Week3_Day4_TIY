@@ -60,7 +60,6 @@ namespace adv_employee
                         }
                     case '5':
                         {
-                            Console.WriteLine("selected 5");
                             DisplayAll(employlist);
 
                             break;
@@ -68,7 +67,7 @@ namespace adv_employee
                     case '6':
                         {
                             Exit(fileName, employlist);
-                            Console.WriteLine("Your file has been saved, and will now exit");
+                            Console.WriteLine("Your file has been saved, you may exit the program");
                             useprogram = false;
                                 break;
                         }
@@ -90,6 +89,7 @@ namespace adv_employee
 
         static void Exit(string file, List<EmployInfo> cycle)
         {
+            Console.Clear();
 
             using (XmlWriter writer = XmlWriter.Create(file))
             {
@@ -112,17 +112,17 @@ namespace adv_employee
 
         static void Pay(List<EmployInfo> cycle)
         {
-            
+
             foreach (EmployInfo a in cycle)
             {
-                if (a.Id == "terminated")
+                if (a.Id == "TERMINATED")
                 {
-                    Console.WriteLine(string.Format("ID: {0}. NAME: {1} : TERMINATED - NOT PAID", a.Name, a.Id));
+                    Console.WriteLine(string.Format("NAME: {1} : TERMINATED - NOT PAID",  a.Id, a.Name));
 
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("ID: {0}. NAME: {1} : ACTIVE - PAID", a.Name, a.Id));
+                    Console.WriteLine(string.Format("ID: {0}. NAME: {1} : ACTIVE - PAID", a.Id, a.Name));
                 }
 
             }
@@ -132,14 +132,16 @@ namespace adv_employee
 
         static void Terminate1(List<EmployInfo> cycle)
         {
-            Console.WriteLine("Please enter employee id ");
+            Console.Clear();
+
+            Console.WriteLine("Please enter the employee id you want to terminate ");
             string idEnd = Console.ReadLine();
 
             foreach (EmployInfo a in cycle)
             {
                 if (a.Id == idEnd)
                 {
-                    a.Terminate("terminated");
+                    a.Terminate("TERMINATED");
                     
 
                 }
@@ -150,7 +152,8 @@ namespace adv_employee
 
         static void GiveRaise(List<EmployInfo> cycle)
         {
-            Console.WriteLine("Please enter employee id ");
+            Console.Clear();
+            Console.WriteLine("Please enter employee id for a raise");
             string idRaise = Console.ReadLine();
 
             foreach (EmployInfo a in cycle)
@@ -159,9 +162,9 @@ namespace adv_employee
                 if ( a.Id == idRaise)
                 {
                     double newRaise = Convert.ToDouble(idRaise);
-                     newRaise = a.Payrate + 1000;
-                    Console.WriteLine(newRaise);
-                    a.Raise(newRaise);
+                     newRaise = a.Payrate * .2;
+                    double totalRaise = newRaise + a.Payrate;
+                    a.Raise(totalRaise);
                     
                 }
 
@@ -171,7 +174,8 @@ namespace adv_employee
         }
         static void NewEmploy(List<EmployInfo> newlist)
         {
-           
+            Console.Clear();
+
             Console.WriteLine("Please enter an employee name ");
             string employName = Console.ReadLine();
             Console.WriteLine("Please enter employee id ");
@@ -180,19 +184,25 @@ namespace adv_employee
             double salary = Convert.ToDouble(Console.ReadLine());
             EmployInfo employN = new EmployInfo( id, employName, salary);
             newlist.Add(employN);
-            Console.WriteLine(employN.Name + ", " + employN.Id + ", " + employN.Payrate.ToString());
-            
+            Console.WriteLine("Employee has been created " + employN.Id + ", " + employN.Name    + ", " + employN.Payrate.ToString());
 
         }
 
         static void DisplayAll(List<EmployInfo> cycle)
         {
-
+            Console.Clear();
+            Console.WriteLine("/************EMPLOYEES INFORMATION************/");
+            Console.WriteLine();
             foreach (EmployInfo a in cycle)
             {
-                Console.WriteLine(string.Format("Employee info: {0}, {1}, {2}", a.Name, a.Id, a.Payrate));
+                Console.WriteLine(string.Format("ID: {0}    |    NAME: {1}    |    SALARY: {2}", a.Id, a.Name, a.Payrate));
          
             }
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+
         }
 
         static void ReadInFile(string file, List<EmployInfo> cycle)
@@ -216,13 +226,11 @@ namespace adv_employee
                                 {
                                     
                                     empName = grandChild.InnerText;
-                                    Console.WriteLine("Employee Name: " + empName);
                                     break;
                                 }
                             case "ID":
                                 {
                                     empId = grandChild.InnerText;
-                                    Console.WriteLine(empId);
                                     break;
 
                                 }
@@ -230,7 +238,6 @@ namespace adv_employee
                             case "Salary":
                                 {
                                     empPay = Convert.ToDouble(grandChild.InnerText);
-                                    Console.WriteLine(empPay);
                                     break;
                                 }
                             default:
